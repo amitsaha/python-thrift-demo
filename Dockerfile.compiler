@@ -1,0 +1,17 @@
+FROM lambci/lambda:build-python3.6
+WORKDIR /var/task
+# Build Apache thrift Python library                                                                                                                           
+RUN yum clean all && \                                                                                                                                   
+    yum -y install boost* gcc 
+RUN git clone https://github.com/apache/thrift.git && \
+     cd thrift && \
+     ./bootstrap.sh && \
+     ./configure && \
+     make && make install && \
+     cd lib/py && python3 setup.py install && \
+     python3 setup.py sdist # Builds a thriftSomeVersion.tar.gz
+
+WORKDIR /workspace
+VOLUME /workspace
+
+CMD ["thrift"]

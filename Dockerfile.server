@@ -1,0 +1,11 @@
+FROM amitsaha/thrift-compiler
+
+RUN mkdir -p /workspace
+
+ADD gen-py/ /workspace/
+WORKDIR /workspace
+ADD app.py /workspace
+RUN pip3 install wheel flask six
+EXPOSE 5000
+RUN ls
+CMD ["python3", "app.py"]
